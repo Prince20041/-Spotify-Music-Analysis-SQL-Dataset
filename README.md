@@ -69,13 +69,62 @@ In advanced stages, the focus shifts to improving query performance. Some optimi
 ## Questions
 
 1. **Retrieve the names of all tracks that have more than 1 billion streams.**
+```SQL
+SELECT * 
+from spotify
+where stream > 1000000000;
+```
 2. **List all albums along with their respective artists.**
+```SQL
+select distinct album, artist 
+from spotify
+order by 1;
+
+```
 3. **Get the total number of comments for tracks where `licensed = TRUE`.**
+```SQL
+select sum(comments) as total_comments 
+from spotify
+where licensed = 'true';
+```
 4. **Find all tracks that belong to the album type `single`.**
+```SQL
+select track, album_type 
+from spotify 
+where album_type = 'single';
+```
 5. **Count the total number of tracks by each artist.**
+```SQL
+select artist, count(track) as total_track
+from spotify
+group by artist
+order by 2 desc;
+```
 6. **Calculate the average danceability of tracks in each album.**
+```SQL
+select album, avg(danceability) as avg_dance
+from spotify
+group by album
+order by 2 desc;
+```
 7. **Find the top 5 tracks with the highest energy values.**
+```SQL
+select track, energy
+from spotify
+order by 2 desc
+limit 5;
+```
 8. **List all tracks along with their views and likes where `official_video = TRUE`.**
+```SQL
+select 
+	track, 
+	sum(views) as total_views, 
+	sum(likes) as total_likes
+from spotify
+where official_video = 'true'
+group by 1
+order by 2 desc;
+```
 9. **For each album, calculate the total views of all associated tracks.**
 ```SQL
 select
@@ -86,7 +135,7 @@ from spotify
 group by 1, 2
 order by 3 desc;
 ```
-11. **Retrieve the track names that have been streamed on Spotify more than YouTube.**
+10. **Retrieve the track names that have been streamed on Spotify more than YouTube.**
 ```SQL
 select * from (select 
 		track,
@@ -98,7 +147,7 @@ group by 1
 where streamed_on_spotify > streamed_on_youtube
 	and streamed_on_youtube <> 0;
 ```
-12. **Find the top 3 most-viewed tracks for each artist using window functions.**
+11. **Find the top 3 most-viewed tracks for each artist using window functions.**
 ```SQL
 with ranked_artist as ( 
 select 
@@ -114,7 +163,7 @@ select * from ranked_artist
 where rank <= 3;
 
 ```
-13. **Write a query to find tracks where the liveness score is above the average.**
+12. **Write a query to find tracks where the liveness score is above the average.**
 ```SQL
 select 
 	track,
@@ -123,7 +172,7 @@ select
 from spotify
 where liveness > (select avg(liveness) from spotify);
 ```
-14. **Use a `WITH` clause to calculate the difference between the highest and lowest energy values for tracks in each album.**
+13. **Use a `WITH` clause to calculate the difference between the highest and lowest energy values for tracks in each album.**
 ```SQL
 WITH cte
 AS
